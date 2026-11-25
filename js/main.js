@@ -290,4 +290,51 @@
     }
   }, { passive: true });
 
+
+  // --- Custom Fluid Cursor (Desktop Fine Pointer Only) ---
+  var cursorDot = document.getElementById('customCursorDot');
+  var cursorRing = document.getElementById('customCursorRing');
+  if (cursorDot && cursorRing && window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+    var mouseX = -100, mouseY = -100;
+    var ringX = -100, ringY = -100;
+    var cursorVisible = false;
+
+    document.addEventListener('mousemove', function (e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.transform = 'translate3d(' + (mouseX - 4) + 'px, ' + (mouseY - 4) + 'px, 0)';
+      if (!cursorVisible) {
+        ringX = mouseX;
+        ringY = mouseY;
+        cursorDot.style.opacity = '1';
+        cursorRing.style.opacity = '1';
+        cursorVisible = true;
+      }
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', function () {
+      cursorDot.style.opacity = '0';
+      cursorRing.style.opacity = '0';
+      cursorVisible = false;
+    });
+
+    function animateCursorRing() {
+      if (cursorVisible) {
+        ringX += (mouseX - ringX) * 0.2;
+        ringY += (mouseY - ringY) * 0.2;
+        var halfW = cursorRing.offsetWidth / 2;
+        var halfH = cursorRing.offsetHeight / 2;
+        cursorRing.style.transform = 'translate3d(' + (ringX - halfW) + 'px, ' + (ringY - halfH) + 'px, 0)';
+      }
+      requestAnimationFrame(animateCursorRing);
+    }
+    requestAnimationFrame(animateCursorRing);
+
+    var interactiveEls = document.querySelectorAll('a, button, input, select, textarea, .proof-card');
+    interactiveEls.forEach(function (el) {
+      el.addEventListener('mouseenter', function () { cursorRing.classList.add('cursor-hover'); });
+      el.addEventListener('mouseleave', function () { cursorRing.classList.remove('cursor-hover'); });
+    });
+  }
+
 })();

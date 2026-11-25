@@ -161,22 +161,35 @@ body.privacy-blur-on .proof-image {
   background-color: var(--color-cobalt);
   border-radius: 50%;
   position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
   pointer-events: none;
   z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.08s ease-out;
+  will-change: transform;
+  transition: opacity 0.2s ease, width 0.15s ease, height 0.15s ease;
 }
 
 #customCursorRing {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   border: 2px solid var(--color-cobalt);
   border-radius: 50%;
   position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
   pointer-events: none;
   z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), width 0.2s, height 0.2s;
+  will-change: transform;
+  transition: opacity 0.2s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+}
+
+#customCursorRing.cursor-hover {
+  width: 48px;
+  height: 48px;
+  border-color: var(--color-ink);
+  background-color: rgba(29, 78, 216, 0.08);
 }
 
 /* Interactive Click Ripple */
